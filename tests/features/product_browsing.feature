@@ -15,7 +15,7 @@ Feature: Product browsing and details on AutomationExercise
 
     When the user clicks "View Product" for the first product
     Then the user is navigated to the product detail page
-    And the product details are visible: name, category, price, availability, condition, brand
+    And the product details are visible: name, category, price, availability, condition, brand 
 
   @regression @products @search @happy
   Scenario: Search for a product

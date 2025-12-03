@@ -18,7 +18,7 @@ Feature: Cart management and subscription validation on AutomationExercise
   @regression @subscription @happy
   Scenario: Verify subscription in cart page
     When the user clicks "Cart"
-    And the user scrolls to the footer
+    And the user scrolls to the footer 
     Then the section "SUBSCRIPTION" is visible
 
     When the user enters an email and submits subscription

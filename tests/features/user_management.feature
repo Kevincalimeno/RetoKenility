@@ -22,7 +22,7 @@ Feature: User Management on AutomationExercise
     Then the message "ACCOUNT CREATED!" is visible
 
     When the user clicks "Continue"
-    Then the message "Logged in as username" is visible
+    Then the message "Logged in as username" is visible 
 
     When the user clicks "Delete Account"
     Then the message "ACCOUNT DELETED!" is visible

@@ -16,7 +16,7 @@ Feature: Checkout and order placement on AutomationExercise
     When the user clicks "Proceed To Checkout"
     And clicks "Register / Login"
     And creates a new account
-    Then the message "ACCOUNT CREATED!" is visible
+    Then the message "ACCOUNT CREATED!" is visible 
 
     When the user clicks "Continue"
     Then the message "Logged in as username" is visible

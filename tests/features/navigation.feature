@@ -13,7 +13,7 @@ Feature: Navigation and scroll behavior on AutomationExercise
     Then the section "SUBSCRIPTION" is visible
 
     When the user clicks the scroll-up arrow
-    Then the text "Full-Fledged practice website for Automation Engineers" is visible at the top
+    Then the text "Full-Fledged practice website for Automation Engineers" is visible at the top 
 
   @regression @scroll
   Scenario: Verify scroll up without arrow button
