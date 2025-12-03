@@ -2,20 +2,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
-const urls = {
-  QA: {
-    MX: 'https://qastaging.siigo.mx',
-    CO: 'https://qastaging.siigo.com',
-  },
-  ST: {
-    MX: 'https://siigonube2.siigo.mx/',
-    CO: 'https://siigonube2.siigo.com/',
-  },
-  PRD: {
-    MX: 'https://siigonube.siigo.mx',
-    CO: 'https://siigonube.siigo.com',
-  },
-};
+const urls = 'https://qastaging.siigo.mx';
 
 let browser, page;
 
