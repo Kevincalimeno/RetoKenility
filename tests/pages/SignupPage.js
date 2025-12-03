@@ -34,9 +34,9 @@ class SignupPage {
     await this.page.waitForSelector(`h2:has-text("${section}")`);
   }
 
-  async fillAccountInformation() {
+  async fillAccountInformation(password) {
     await this.page.click(this.genderMr);
-    await this.page.fill(this.password, "Password123");
+    await this.page.fill(this.password, password);
     await this.page.selectOption(this.days, "10");
     await this.page.selectOption(this.months, "5");
     await this.page.selectOption(this.years, "1995");

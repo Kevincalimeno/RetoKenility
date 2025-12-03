@@ -11,7 +11,7 @@ class AccountPage {
   }
 
   async messageIsVisible(msg) {
-    await this.page.waitForSelector(`h2:has-text("${msg}")`);
+  await this.page.getByText(msg, { exact: false }).waitFor();
   }
 
   async clickContinue() {

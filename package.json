@@ -4,14 +4,16 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf playwright-report test-results target",
-    "test": "npm run clean && npx bddgen %BDD_TAGS% && npx playwright test"
-  },
+    "bdd-gen": "npx bddgen",
+    "test": "npx playwright test",
+    "test:full": "npm run clean && npm run bdd-gen && npm run test",
+    "test:tag": "npm run bdd-gen && npm run test"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@cucumber/cucumber": "^11.2.0",
     "@playwright/test": "^1.50.0",
     "@types/node": "^22.10.2",
     "dotenv": "^16.4.7",

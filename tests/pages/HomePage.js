@@ -1,7 +1,7 @@
 class HomePage {
   constructor(page) {
     this.page = page;
-    this.signupLoginLink = 'a[href="/login"]';
+    this.signupLoginLink = 'a[href="/login"]';    
     this.homeLogo = 'img[src="/static/images/home/logo.png"]';
   }
 

@@ -14,9 +14,6 @@ class LoginPage {
     this.signupName = 'input[data-qa="signup-name"]';
     this.signupEmail = 'input[data-qa="signup-email"]';
     this.signupButton = 'button[data-qa="signup-button"]';
-
-    // Error message
-    this.loginError = 'p:has-text("Your email or password is incorrect!")';
   }
 
   async sectionIsVisible(section) {
@@ -46,9 +43,9 @@ class LoginPage {
     await this.page.click(this.signupButton);
   }
 
-  async errorIsVisible() {
-    await this.page.waitForSelector(this.loginError);
-  }
+  async errorIsVisible(msg) {
+  await this.page.waitForSelector(`p:has-text("${msg}")`);
+}
 }
 
 module.exports = LoginPage;
