@@ -1,3 +1,5 @@
+const { expect } = require('@playwright/test');
+
 class SignupPage {
   constructor(page) {
     this.page = page;
@@ -28,6 +30,8 @@ class SignupPage {
     this.mobile = '#mobile_number';
 
     this.createAccountBtn = 'button[data-qa="create-account"]';
+    this.continueBtn = 'a[data-qa="continue-button"]';
+    this.accountCreatedMsg = 'h2[data-qa="account-created"]';
   }
 
   async sectionVisible(section) {
@@ -63,6 +67,44 @@ class SignupPage {
   async clickCreateAccount() {
     await this.page.click(this.createAccountBtn);
   }
+
+  // -----------------------------------------------------
+  //    🔹 MÉTODO PRINCIPAL PARA Order Management
+  // -----------------------------------------------------
+ async signupNewUser(email, name, password) {
+
+  // Siempre esperar que aparezcan los campos correctos
+  await this.page.waitForSelector('[data-qa="signup-name"]');
+
+  // 🔹 Rellenar el formulario inicial REAL
+  await this.page.fill('[data-qa="signup-name"]', name);
+  await this.page.fill('[data-qa="signup-email"]', email);
+  await this.page.click('button[data-qa="signup-button"]');
+
+  // 🔹 Pantalla Enter Account Information
+  await this.page.waitForSelector(this.accountInfoTitle);
+
+  await this.fillAccountInformation(password);
+  await this.selectNewsletterAndOffers();
+  await this.fillPersonalAndAddressDetails();
+
+  // 🔹 Crear cuenta
+  await this.page.click(this.createAccountBtn);
+}
+
+  async verifyAccountCreated() {
+    await expect(this.page.locator(this.accountCreatedMsg)).toBeVisible();
+  }
+
+  // -----------------------------------------------------
+  //    🔹 CONTINUAR DESPUÉS DE CREAR LA CUENTA
+  // -----------------------------------------------------
+  async clickContinue() {
+    await this.page.click(this.continueBtn);
+  }
+
+
+  
 }
 
 module.exports = SignupPage;

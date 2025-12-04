@@ -43,3 +43,20 @@ Scenario: Verify subscription in home page
     And clicks Add to cart
     And clicks View Cart quantity
     Then the product is displayed in the cart with quantity 4
+
+    @regression @cart @happy @test17
+  Scenario: Remove a product from the cart
+    Given the user opens the Products page
+    And adds the first product to the cart
+    And clicks View Cart
+    When the user removes the product from the cart
+    Then the cart should be empty
+
+  @regression @search @cart @signup @happy @test20
+  Scenario: Search a product and verify cart persists after signup & login
+    Given the user is on the Products page
+    When the user searches for the product "Blue"
+    And the user adds the first search result to the cart
+    And the user proceeds to the cart after search
+    And the user creates a new account from cart
+    Then the product should still be in the cart

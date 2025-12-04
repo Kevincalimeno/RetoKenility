@@ -1,3 +1,5 @@
+require('../hooks/hooks.js');
+
 const { createBdd } = require('playwright-bdd');
 const { When, Then } = createBdd();
 const { expect } = require('@playwright/test');

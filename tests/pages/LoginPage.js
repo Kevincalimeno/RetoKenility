@@ -1,3 +1,5 @@
+const { expect } = require('@playwright/test');
+
 class LoginPage {
   constructor(page) {
     this.page = page;
@@ -44,8 +46,13 @@ class LoginPage {
   }
 
   async errorIsVisible(msg) {
-  await this.page.waitForSelector(`p:has-text("${msg}")`);
-}
+    await this.page.waitForSelector(`p:has-text("${msg}")`);
+  }
+
+  async verifyLoggedIn() {
+  await expect(this.page.locator('a:has-text("Logged in as")'))
+    .toBeVisible({ timeout: 10000 });
+  }
 }
 
 module.exports = LoginPage;

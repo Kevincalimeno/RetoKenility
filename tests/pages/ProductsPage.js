@@ -48,10 +48,64 @@ class ProductsPage {
   }
 
    async searchProduct(productName) {
-    await this.searchInput.click();
-    await this.searchInput.fill(productName);
-    await this.searchButton.click();
+   await this.searchInput.fill(productName);
+  await this.searchButton.click();
+  await this.products.first().waitFor({ state: 'visible' });
   }
+
+  async clickCategory(category) {
+    // Abre el panel usando el href del acordeón
+    await this.page.locator(`a[href="#${category}"]`).click();
+  }
+
+
+async scrollToRecommended() {
+  await this.page.evaluate(() => window.scrollBy(0, document.body.scrollHeight));
+  await this.page.locator('#recommended-item-carousel').waitFor();
+}
+
+async verifySubCategoryLoaded(sub) {
+  const header = this.page.locator('div.features_items h2.title');
+  await expect(header).toContainText(sub, { timeout: 7000 });
+}
+
+
+async addRecommendedProduct() {
+  await this.page.locator('#recommended-item-carousel .product-image-wrapper').nth(0).hover();
+  await this.page.locator('#recommended-item-carousel .add-to-cart').first().click();
+}
+
+
+async verifyCategoryLoaded(category) {
+  const header = this.page.locator('div.features_items h2.title');
+  await expect(header).toContainText(category);
+}
+
+async clickSubCategory(sub) {
+  const subItem = this.page
+    .locator(`div.panel-body ul li a:has-text("${sub}")`)
+    .first();
+
+  await subItem.scrollIntoViewIfNeeded();
+  await subItem.click({ force: true });
+}
+
+
+  async selectBrand(brandName) {
+  await this.page.locator(`a:has-text("${brandName}")`).click();
+}
+
+async verifyProductsBrand(brandName) {
+  await expect(this.page).toHaveURL(new RegExp(`brand_products/${brandName}`, "i"));
+  const header = this.page.locator('h2.title');
+  await expect(header).toContainText(`Brand - ${brandName} Products`);
+}
+
+
+
+async scrollToCategories() {
+  await this.page.locator('.left-sidebar').scrollIntoViewIfNeeded();
+}
 
   async openFirstProduct() {
     await this.viewProductButtons.first().click();
@@ -96,8 +150,24 @@ async addSecondProductToCart() {
 
   // 🚀 View Cart
 async goToCart() {
-  console.log("🚀 Ir al Cart desde el menú...");
-  await this.cartMenu.click();
+  const menuCart = this.page.locator('div.shop-menu a[href="/view_cart"]');
+  await menuCart.scrollIntoViewIfNeeded();
+  await menuCart.click({ force: true });
+  await expect(this.page).toHaveURL(/view_cart/);
 }
+async getFirstProductName() {
+  return (await this.page.locator('.productinfo p').first().textContent()).trim();
+}
+async addFirstSearchResultToCart() {
+  const firstProduct = this.products.first();
+
+  await firstProduct.hover();
+  await firstProduct.locator('.product-overlay .add-to-cart').first().click();
+
+  await expect(this.continueShoppingBtn).toBeVisible();
+  await this.continueShoppingBtn.click();
+}
+
+
 }
 module.exports = ProductsPage;
