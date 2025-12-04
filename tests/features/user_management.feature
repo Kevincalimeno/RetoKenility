@@ -19,13 +19,13 @@ Feature: User Management on AutomationExercise
     And selects the newsletter and special offers options
     And fills the personal and address details
     And clicks "Create Account"
-    Then the message "ACCOUNT CREATED!" is visible
+    Then the login message "ACCOUNT CREATED!" is visible
 
     When the user clicks "Continue"
-    Then the message "Logged in as username" is visible 
+    Then the login message "Logged in as username" is visible
 
     When the user clicks "Delete Account"
-    Then the message "ACCOUNT DELETED!" is visible
+    Then the login message "ACCOUNT DELETED!" is visible
     And clicks "Continue"
 
   @regression @login @happy @test2
@@ -40,17 +40,17 @@ Feature: User Management on AutomationExercise
     And selects the newsletter and special offers options
     And fills the personal and address details
     And clicks "Create Account"
-    Then the message "ACCOUNT CREATED!" is visible
+    Then the login message "ACCOUNT CREATED!" is visible
 
     When the user clicks "Continue"
     And the user clicks "Logout"
     And the login account section "Login to your account" is visible
     And the user enters valid credentials
     And clicks "Login"
-    Then the message "Logged in as username" is visible
+    Then the login message "Logged in as username" is visible
 
     When the user clicks "Delete Account"
-    Then the message "ACCOUNT DELETED!" is visible
+    Then the login message "ACCOUNT DELETED!" is visible
 
   @regression @login @negative @test3
   Scenario: Login with incorrect email and password
@@ -72,14 +72,14 @@ Feature: User Management on AutomationExercise
     And selects the newsletter and special offers options
     And fills the personal and address details
     And clicks "Create Account"
-    Then the message "ACCOUNT CREATED!" is visible
+    Then the login message "ACCOUNT CREATED!" is visible
 
     When the user clicks "Continue"
     And the user clicks "Logout"
     And the login account section "Login to your account" is visible
     And the user enters valid credentials
     And clicks "Login"
-    Then the message "Logged in as username" is visible
+    Then the login message "Logged in as username" is visible
 
     When the user clicks "Logout"
     Then the login page is displayed

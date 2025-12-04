@@ -1,24 +1,32 @@
 const { createBdd } = require('playwright-bdd');
 const { When, Then } = createBdd();
-const SubscriptionPage = require('../pages/SubscriptionPage');
 const { randomEmail } = require('../../utils/dataGenerator');
 
-let subscriptionPage;
 let email;
 
-
-When('the user scrolls to the footer1', async ({ page }) => {
-  subscriptionPage = new SubscriptionPage(page);
+// SCROLL
+When('the user scrolls to the footer1', async () => {
   await subscriptionPage.scrollToFooter();
 });
 
-Then('the {string} is visible', async ({ page }, sectionName) => {
+// SUBSCRIPTION SECTION HOME
+Then('the {string} is visible', async ({}, sectionName) => {
   if (sectionName === "SUBSCRIPTION") {
     await subscriptionPage.verifySubscriptionSectionVisible();
   }
 });
 
-When('the user enters an email and submits subscription', async ({ page }) => {
+// ENTER EMAIL + SUBMIT
+When('the user enters an email and submits subscription', async () => {
   email = randomEmail();
   await subscriptionPage.subscribe(email);
+});
+
+// SUCCESS MESSAGE HOME
+Then('the message sus "You have been successfully subscribed!" is visible', async () => {
+  await subscriptionPage.verifySuccessMessage();
+});
+
+Then('the subscription message {string} is visible', async ({ page }, expectedMessage) => {
+  await subscriptionPage.verifySuccessMessage(expectedMessage);
 });

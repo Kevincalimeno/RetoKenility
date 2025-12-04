@@ -28,6 +28,8 @@ test.describe('Product browsing and details on AutomationExercise', () => {
 
 // == technical section ==
 
+test.beforeEach('BeforeEach Hooks', ({ $runScenarioHooks, page }) => $runScenarioHooks('before', { page }));
+
 test.use({
   $test: [({}, use) => use(test), { scope: 'test', box: true }],
   $uri: [({}, use) => use('tests\\features\\product_browsing.feature'), { scope: 'test', box: true }],

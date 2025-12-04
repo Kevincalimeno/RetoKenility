@@ -11,8 +11,9 @@ Feature: Contact Us Form on AutomationExercise
   Scenario: Submit contact us form successfully
     When the user navigates to contact "Contact us"
     Then the contact section "Get In Touch" is visible
+    When the user scrolls to the footer1
     And the user fills the contact form with valid data
-    And the user uploads a file "unnamed.jpg"
+    And the user uploads a file "TEST.txt"
     And the user submits the contact form
     Then the contact success message is visible
     When the user returns to home

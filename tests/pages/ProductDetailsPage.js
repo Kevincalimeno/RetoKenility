@@ -13,6 +13,7 @@ class ProductDetailsPage {
     this.quantityInput = page.locator('#quantity');
     this.addToCartButton = page.getByRole('button', { name: ' Add to cart' });
     this.viewCartButton = page.getByRole('link', { name: 'View Cart' });
+    this.continueShoppingBtn = page.getByRole('button', { name: /Continue Shopping/i });
   }
 
   async verifyProductDetailPageVisible() {
@@ -42,6 +43,9 @@ class ProductDetailsPage {
 
   async addToCart() {
     await this.addToCartButton.click();
+      
+    await expect(this.continueShoppingBtn).toBeVisible();
+    await this.continueShoppingBtn.click();
   }
 
   async goToCart() {

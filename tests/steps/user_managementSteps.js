@@ -87,8 +87,9 @@ When('the user enters invalid credentials', async () => {
   await login.enterInvalidCredentials();
 });
 
-Then('the message {string} is visible', async ({}, msg) => {
-  if (msg.includes("username")) {
+
+Then('the login message {string} is visible', async ({}, msg) => {
+   if (msg.includes("username")) {
     msg = msg.replace("username", userCache.generatedUser.name);
   }
   console.log("Validando mensaje:", msg);
