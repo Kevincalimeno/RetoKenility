@@ -1,15 +1,9 @@
 require('../hooks/hooks.js');
-
 const { createBdd } = require('playwright-bdd');
 const { When, Then } = createBdd();
 const ContactPage = require('../pages/ContactPage');
 const path = require('path');
-const { 
-  randomEmail, 
-  randomName, 
-  randomSubject, 
-  randomMessage 
-} = require('../../utils/dataGenerator');
+const { randomEmail, randomName, randomSubject, randomMessage } = require('../../utils/dataGenerator');
 
 let contact;
 
@@ -27,15 +21,11 @@ When('the user fills the contact form with valid data', async ({ page }) => {
   const email = randomEmail();
   const subject = randomSubject();
   const message = randomMessage();
-
-  console.log("📝 Contact form data:", { name, email, subject, message });
-
   await contact.fillForm(name, email, subject, message);
 });
 
 When('the user uploads a file {string}', async ({ page }, filename) => {
   const filePath = path.join(__dirname, '../resources', filename);
-  console.log("📁 Subiendo archivo desde:", filePath);
   await contact.uploadFile(filePath);
 });
 
@@ -50,4 +40,3 @@ Then('the contact success message is visible', async ({ page }) => {
 When('the user returns to home', async ({ page }) => {
   await page.getByRole('link', { name: ' Home' }).click();
 });
-

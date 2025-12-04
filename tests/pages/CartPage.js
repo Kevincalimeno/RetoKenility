@@ -3,21 +3,11 @@ const { expect } = require('@playwright/test');
 class CartPage {
   constructor(page) {
     this.page = page;
-
-    // Cart en el menú
     this.cartLink = page.getByRole('link', { name: ' Cart', exact: true });
-
-    // Productos dentro del carrito
     this.product1 = page.getByRole('link', { name: 'Blue Top' });
     this.product2 = page.getByRole('link', { name: 'Men Tshirt' });
-
-    // Precios Rs.
     this.prices = page.getByText('Rs.');
-
-    // Producto específico en la tabla
     this.firstProductInCart = page.locator('#product-5');
-
-    // Botones nuevos
     this.proceedToCheckoutBtn = page.locator('a.check_out');
     this.registerLoginBtn = page.getByRole('link', { name: 'Register / Login' });
   }
@@ -36,8 +26,8 @@ class CartPage {
   }
 
   async verifyProductInCart(productName) {
-  await expect(this.page.locator('#cart_info')).toContainText(productName);
-}
+    await expect(this.page.locator('#cart_info')).toContainText(productName);
+  }
 
   async verifyPricesQuantitiesTotals() {
     await expect(this.prices.nth(0)).toBeVisible();
@@ -46,11 +36,11 @@ class CartPage {
     await expect(this.prices.nth(3)).toBeVisible();
   }
 
+  // unidades
   async verifyQuantity(expectedQty) {
     await expect(this.firstProductInCart).toContainText(String(expectedQty));
   }
 
-  // 🔹 AÑADIDOS PARA ORDER MANAGEMENT
   async clickProceedToCheckout() {
     await this.proceedToCheckoutBtn.click();
   }
@@ -59,21 +49,19 @@ class CartPage {
     await this.registerLoginBtn.click();
   }
 
-  // 🔹 Click en botón eliminar del primer producto
   async removeFirstProduct() {
     await this.page.click('a.cart_quantity_delete'); 
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForTimeout(1000); 
   }
 
-  // 🔹 Verificar que el carrito está vacío
+  // carrito vacío
   async verifyCartIsEmpty() {
     await expect(this.page.locator('#empty_cart')).toBeVisible({ timeout: 7000 });
   }
 
   async clickSignupLogin() {
-  await this.page.getByRole('link', { name: /Signup \/ Login/i }).click();
-}
-
+    await this.page.getByRole('link', { name: /Signup \/ Login/i }).click();
+  }
 }
 
 module.exports = CartPage;

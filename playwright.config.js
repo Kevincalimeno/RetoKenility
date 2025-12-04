@@ -11,11 +11,9 @@ const testDir = defineBddConfig({
 module.exports = defineConfig({
   testDir: '.features-gen',      
   testMatch: '**/*.spec.js',     
-
   reporter: [['html']],
-
   use: {
-    headless: false,
+    headless: true,
     trace: 'on-first-retry',
   },
 });

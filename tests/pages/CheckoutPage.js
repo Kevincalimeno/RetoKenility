@@ -6,6 +6,7 @@ class CheckoutPage {
     this.placeOrderBtn = 'a.check_out';
   }
 
+  // Entrega
   async verifyDeliveryAddress() {
     const address = this.page.locator('#address_delivery');
 
@@ -21,6 +22,7 @@ class CheckoutPage {
     await expect(address).toContainText("3001234567");
   }
 
+  // Facturación 
   async verifyBillingAddress() {
     const address = this.page.locator('#address_invoice');
 
@@ -36,7 +38,7 @@ class CheckoutPage {
     await expect(address).toContainText("3001234567");
   }
 
-   async clickPlaceOrder() {
+  async clickPlaceOrder() {
     const btn = this.page.locator(this.placeOrderBtn);
     await expect(btn).toBeVisible();
     await btn.click();

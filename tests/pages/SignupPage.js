@@ -3,21 +3,14 @@ const { expect } = require('@playwright/test');
 class SignupPage {
   constructor(page) {
     this.page = page;
-
     this.accountInfoTitle = 'h2:has-text("Enter Account Information")';
-
-    // Account info
     this.genderMr = '#id_gender1';
     this.password = '#password';
     this.days = '#days';
     this.months = '#months';
     this.years = '#years';
-
-    // Newsletters
     this.newsletter = '#newsletter';
     this.optin = '#optin';
-
-    // Personal details
     this.firstName = '#first_name';
     this.lastName = '#last_name';
     this.company = '#company';
@@ -28,7 +21,6 @@ class SignupPage {
     this.city = '#city';
     this.zipcode = '#zipcode';
     this.mobile = '#mobile_number';
-
     this.createAccountBtn = 'button[data-qa="create-account"]';
     this.continueBtn = 'a[data-qa="continue-button"]';
     this.accountCreatedMsg = 'h2[data-qa="account-created"]';
@@ -51,6 +43,7 @@ class SignupPage {
     await this.page.check(this.optin);
   }
 
+  // volver dinamicos
   async fillPersonalAndAddressDetails() {
     await this.page.fill(this.firstName, "Kevin");
     await this.page.fill(this.lastName, "Test");
@@ -68,43 +61,25 @@ class SignupPage {
     await this.page.click(this.createAccountBtn);
   }
 
-  // -----------------------------------------------------
-  //    🔹 MÉTODO PRINCIPAL PARA Order Management
-  // -----------------------------------------------------
- async signupNewUser(email, name, password) {
-
-  // Siempre esperar que aparezcan los campos correctos
-  await this.page.waitForSelector('[data-qa="signup-name"]');
-
-  // 🔹 Rellenar el formulario inicial REAL
-  await this.page.fill('[data-qa="signup-name"]', name);
-  await this.page.fill('[data-qa="signup-email"]', email);
-  await this.page.click('button[data-qa="signup-button"]');
-
-  // 🔹 Pantalla Enter Account Information
-  await this.page.waitForSelector(this.accountInfoTitle);
-
-  await this.fillAccountInformation(password);
-  await this.selectNewsletterAndOffers();
-  await this.fillPersonalAndAddressDetails();
-
-  // 🔹 Crear cuenta
-  await this.page.click(this.createAccountBtn);
-}
+  async signupNewUser(email, name, password) {
+    await this.page.waitForSelector('[data-qa="signup-name"]');    
+    await this.page.fill('[data-qa="signup-name"]', name);
+    await this.page.fill('[data-qa="signup-email"]', email);
+    await this.page.click('button[data-qa="signup-button"]');
+    await this.page.waitForSelector(this.accountInfoTitle);
+    await this.fillAccountInformation(password);
+    await this.selectNewsletterAndOffers();
+    await this.fillPersonalAndAddressDetails();
+    await this.page.click(this.createAccountBtn);
+  }
 
   async verifyAccountCreated() {
     await expect(this.page.locator(this.accountCreatedMsg)).toBeVisible();
   }
 
-  // -----------------------------------------------------
-  //    🔹 CONTINUAR DESPUÉS DE CREAR LA CUENTA
-  // -----------------------------------------------------
   async clickContinue() {
     await this.page.click(this.continueBtn);
   }
-
-
-  
 }
 
 module.exports = SignupPage;

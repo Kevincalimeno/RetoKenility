@@ -47,12 +47,12 @@ test.describe('User Management on AutomationExercise', () => {
     await Then('the login message "ACCOUNT DELETED!" is visible'); 
   });
 
-  test('Login with incorrect email and password', { tag: ['@regression', '@login', '@negative', '@test3'] }, async ({ When, Then, And, page }) => { 
+  test('Login with incorrect email and password', { tag: ['@regression', '@login', '@negative', '@test3'] }, async ({ When, Then, And }) => { 
     await When('the user navigates to "Signup / Login"'); 
     await And('the login account section "Login to your account" is visible'); 
     await And('the user enters invalid credentials'); 
     await And('clicks "Login"'); 
-    await Then('the error "Your email or password is incorrect!" is visible', null, { page }); 
+    await Then('the error "Your email or password is incorrect!" is visible'); 
   });
 
   test('Logout user after successful login', { tag: ['@regression', '@logout', '@happy', '@test4'] }, async ({ When, Then, And }) => { 
@@ -76,12 +76,12 @@ test.describe('User Management on AutomationExercise', () => {
     await Then('the login page is displayed'); 
   });
 
-  test('Register user with existing email', { tag: ['@regression', '@register', '@negative', '@test5'] }, async ({ When, Then, And, page }) => { 
+  test('Register user with existing email', { tag: ['@regression', '@register', '@negative', '@test5'] }, async ({ When, Then, And }) => { 
     await When('the user navigates to "Signup / Login"'); 
     await And('the login section "New User Signup!" is visible'); 
-    await And('the user enters an existing name and email', null, { page }); 
+    await And('the user enters an existing name and email'); 
     await And('clicks "Signup"'); 
-    await Then('the error "Email Address already exist!" is visible', null, { page }); 
+    await Then('the error "Email Address already exist!" is visible'); 
   });
 
 });

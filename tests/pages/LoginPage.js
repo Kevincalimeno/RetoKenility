@@ -3,16 +3,11 @@ const { expect } = require('@playwright/test');
 class LoginPage {
   constructor(page) {
     this.page = page;
-
-    // Sections
     this.loginSectionTitle = 'h2:has-text("Login to your account")';
     this.signupSectionTitle = 'h2:has-text("New User Signup!")';
-
-    // Inputs
     this.loginEmail = 'input[data-qa="login-email"]';
     this.loginPassword = 'input[data-qa="login-password"]';
     this.loginButton = 'button[data-qa="login-button"]';
-
     this.signupName = 'input[data-qa="signup-name"]';
     this.signupEmail = 'input[data-qa="signup-email"]';
     this.signupButton = 'button[data-qa="signup-button"]';
@@ -22,11 +17,13 @@ class LoginPage {
     await this.page.waitForSelector(`h2:has-text("${section}")`);
   }
 
+  //  login válidas
   async enterValidCredentials(email, password) {
     await this.page.fill(this.loginEmail, email);
     await this.page.fill(this.loginPassword, password);
   }
 
+  // login con datos incorrectos
   async enterInvalidCredentials() {
     await this.page.fill(this.loginEmail, "wrong@mail.com");
     await this.page.fill(this.loginPassword, "invalid123");
@@ -45,13 +42,14 @@ class LoginPage {
     await this.page.click(this.signupButton);
   }
 
+  // Mensaje de error cuando las credenciales fallan
   async errorIsVisible(msg) {
     await this.page.waitForSelector(`p:has-text("${msg}")`);
   }
 
   async verifyLoggedIn() {
-  await expect(this.page.locator('a:has-text("Logged in as")'))
-    .toBeVisible({ timeout: 10000 });
+    await expect(this.page.locator('a:has-text("Logged in as")'))
+      .toBeVisible({ timeout: 10000 });
   }
 }
 
