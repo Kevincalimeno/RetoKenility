@@ -1,5 +1,4 @@
 require('../hooks/hooks.js');
-
 const { createBdd } = require('playwright-bdd');
 const { When, Then } = createBdd();
 
@@ -14,7 +13,6 @@ Then('only the products of that brand should be displayed', async () => {
 When('the user goes to the cart', async () => {
   await productsPage.goToCart();
 });
-
 
 When('the user adds a brand product to the cart', async () => {
   await productsPage.addFirstProductToCart();

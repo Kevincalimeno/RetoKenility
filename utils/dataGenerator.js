@@ -12,7 +12,7 @@ module.exports = {
   },
 
   randomSubject() {
-  return `Subject ${Math.floor(Math.random() * 10000)}`;
+    return `Subject ${Math.floor(Math.random() * 10000)}`;
   },
 
   randomMessage() {

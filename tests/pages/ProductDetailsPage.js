@@ -3,7 +3,6 @@ const { expect } = require('@playwright/test');
 class ProductDetailsPage {
   constructor(page) {
     this.page = page;
-
     this.productName = page.getByRole('heading', { name: 'Blue Top' });
     this.category = page.getByText('Category: Women > Tops');
     this.price = page.getByText('Rs.');
@@ -29,6 +28,7 @@ class ProductDetailsPage {
     await expect(this.brand).toBeVisible();
   }
 
+  // Para abrir un producto según su posición en el listado
   async openProductByIndex(index = 4) {
     await this.page.getByRole('link', { name: ' View Product' }).nth(index).click();
   }
@@ -41,27 +41,26 @@ class ProductDetailsPage {
     await this.quantityInput.fill(String(qty));
   }
 
-async fillReviewForm(name, email, review) {
-  await this.page.fill('#name', name);
-  await this.page.fill('#email', email);
-  await this.page.fill('#review', review);
-}
+  // Review del producto
+  async fillReviewForm(name, email, review) {
+    await this.page.fill('#name', name);
+    await this.page.fill('#email', email);
+    await this.page.fill('#review', review);
+  }
 
-async submitReview() {
-  await this.page.click('#button-review');
-}
+  async submitReview() {
+    await this.page.click('#button-review');
+  }
 
-async verifyReviewSuccess() {
-  await expect(
-    this.page.locator('.alert-success', { hasText: 'Thank you for your review' })
-  ).toBeVisible();
-}
+  async verifyReviewSuccess() {
+    await expect(
+      this.page.locator('.alert-success', { hasText: 'Thank you for your review' })
+    ).toBeVisible();
+  }
 
-
-
+  // Agregar al carrito y cerrar el modal
   async addToCart() {
     await this.addToCartButton.click();
-      
     await expect(this.continueShoppingBtn).toBeVisible();
     await this.continueShoppingBtn.click();
   }

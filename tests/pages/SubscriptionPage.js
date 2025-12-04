@@ -3,7 +3,6 @@ const { expect } = require('@playwright/test');
 class SubscriptionPage {
   constructor(page) {
     this.page = page;
-
     this.subscriptionHeading = page.getByRole('heading', { name: 'Subscription' });
     this.emailInput = page.getByRole('textbox', { name: 'Your email address' });
     this.subscribeButton = page.locator('#subscribe');
@@ -14,7 +13,6 @@ class SubscriptionPage {
     await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   }
 
-
   async verifySubscriptionSectionVisible() {
     await expect(this.subscriptionHeading).toBeVisible();
   }
@@ -24,9 +22,9 @@ class SubscriptionPage {
     await this.subscribeButton.click();
   }
 
-async verifySuccessMessage(expectedMessage) {
-  await expect(this.successMessage).toHaveText(expectedMessage);
-}
+  async verifySuccessMessage(expectedMessage) {
+    await expect(this.successMessage).toHaveText(expectedMessage);
+  }
 }
 
 module.exports = SubscriptionPage;

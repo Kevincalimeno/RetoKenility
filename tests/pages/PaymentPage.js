@@ -1,7 +1,6 @@
 class PaymentPage {
   constructor(page) {
     this.page = page;
-
     this.inputName = 'input[data-qa="name-on-card"]';
     this.inputCard = 'input[data-qa="card-number"]';
     this.inputCVC = 'input[data-qa="cvc"]';

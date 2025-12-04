@@ -1,7 +1,6 @@
 class AccountPage {
   constructor(page) {
     this.page = page;
-
     this.accountCreatedMsg = 'h2:has-text("Account Created!")';
     this.accountDeletedMsg = 'h2:has-text("Account Deleted!")';
     this.loggedInText = 'a:has-text("Logged in as")';
@@ -11,7 +10,7 @@ class AccountPage {
   }
 
   async messageIsVisible(msg) {
-  await this.page.getByText(msg, { exact: false }).waitFor();
+    await this.page.getByText(msg, { exact: false }).waitFor();
   }
 
   async clickContinue() {

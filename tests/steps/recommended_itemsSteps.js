@@ -1,5 +1,4 @@
 require('../hooks/hooks.js');
-
 const { createBdd } = require('playwright-bdd');
 const { When, Then } = createBdd();
 

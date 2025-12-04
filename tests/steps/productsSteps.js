@@ -1,5 +1,4 @@
 require('../hooks/hooks.js');
-
 const { createBdd } = require('playwright-bdd');
 const { When, Then } = createBdd();
 const { expect } = require('@playwright/test');
@@ -12,7 +11,6 @@ let productDetailsPage;
 let searchKeyword;
 let resultsPage;
 
-// PRODUCTS PAGE
 When('the user clicks Products {string}', async ({ page }, option) => {
   if (option === "Products") {
     productsPage = new ProductsPage(page);
@@ -30,7 +28,6 @@ Then('the products list is visible', async ({ page }) => {
   await productsPage.verifyProductsListVisible();
 });
 
-// PRODUCT DETAIL PAGE
 When('the user clicks "View Product" for the first product', async ({ page }) => {
   await productsPage.openFirstProduct();
   productDetailsPage = new ProductDetailsPage(page);
@@ -46,9 +43,7 @@ Then('the product details are visible: name, category, price, availability, cond
 
 When('the user searches for a product by name', async ({ page }) => {
   productsPage = new ProductsPage(page);
-
-  searchKeyword = "men Tshirt"; // mismo valor del codegen
-
+  searchKeyword = "men Tshirt";
   await productsPage.searchProduct(searchKeyword);
   resultsPage = new SearchResultsPage(page);
 });

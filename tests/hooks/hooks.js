@@ -1,17 +1,13 @@
 const { createBdd } = require('playwright-bdd');
 const { Before } = createBdd();
 
-// ------------------------
-// PAGE OBJECTS EXISTENTES
-// ------------------------
+// Pages que ya existen en otros flujos
 const SubscriptionPage = require('../pages/SubscriptionPage');
 const CartPage = require('../pages/CartPage');
 const ProductsPage = require('../pages/ProductsPage');
 const ProductDetailPage = require('../pages/ProductDetailsPage');
 
-// ------------------------
-// PAGE OBJECTS ORDER MANAGEMENT
-// ------------------------
+// Pages usadas en el flujo de órdenes
 const HomePage = require('../pages/HomePage');
 const SignupPage = require('../pages/SignupPage');
 const LoginPage = require('../pages/LoginPage');
@@ -19,14 +15,10 @@ const CheckoutPage = require('../pages/CheckoutPage');
 const PaymentPage = require('../pages/PaymentPage');
 const OrderConfirmPage = require('../pages/OrderConfirmPage');
 
-// ------------------------
-// UTILIDADES
-// ------------------------
+// Utilidades
 const { randomEmail } = require('../../utils/dataGenerator');
 
-// ------------------------
-// VARIABLES GLOBALES
-// ------------------------
+// Variables globales para reutilizar las páginas
 global.subscriptionPage = undefined;
 global.cartPage = undefined;
 global.productsPage = undefined;
@@ -43,11 +35,11 @@ global.testEmail = undefined;
 global.testPassword = "Test1234";
 
 // ====================================================
-// 🔥 HOOK GLOBAL – SE EJECUTA ANTES DE CADA ESCENARIO
+// Hook que corre antes de cada escenario
 // ====================================================
 Before(async ({ page }) => {
 
-  // 🔥🔥🔥 BLOQUEAR TODA LA PUBLICIDAD ANTES DE CARGAR LA PÁGINA 🔥🔥🔥
+  // Quitar anuncios apenas carga la página (esto ayuda a evitar errores por overlays)
   await page.addInitScript(() => {
     const removeAds = () => {
       const selectors = [
@@ -63,27 +55,25 @@ Before(async ({ page }) => {
       });
     };
 
-    // Ejecutar inmediatamente
+    // Ejecuta apenas carga
     removeAds();
 
-    // Observador para eliminar ads que aparezcan después
+    // Por si aparecen anuncios después, los eliminamos también
     const observer = new MutationObserver(removeAds);
     observer.observe(document, { childList: true, subtree: true });
   });
 
-  // 🔹 Iniciar en la Home ya sin ads
+  // Entrar a la página principal sin anuncios
   await page.goto("https://automationexercise.com", { waitUntil: "networkidle" });
 
-  // 🔹 Logout si está activo
+  // Si quedó alguna sesión abierta, la cierro para empezar limpio
   const logout = page.locator('a:has-text("Logout")');
   if (await logout.isVisible().catch(() => false)) {
     await logout.click();
     await page.waitForLoadState("networkidle");
   }
 
-  // -------------------------
-  // Instanciar Page Objects
-  // -------------------------
+  // Crear instancias de todas las pages que usa el proyecto
   global.subscriptionPage = new SubscriptionPage(page);
   global.cartPage = new CartPage(page);
   global.productsPage = new ProductsPage(page);
@@ -96,8 +86,6 @@ Before(async ({ page }) => {
   global.paymentPage = new PaymentPage(page);
   global.orderConfirmPage = new OrderConfirmPage(page);
 
-  // -------------------------
-  // Datos dinámicos
-  // -------------------------
+  // Genero un correo aleatorio para cada ejecución
   global.testEmail = randomEmail();
 });

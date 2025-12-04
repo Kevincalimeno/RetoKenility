@@ -1,5 +1,4 @@
 require('../hooks/hooks.js');
-
 const { createBdd } = require('playwright-bdd');
 const { Given, When, Then } = createBdd();
 const { randomEmail, randomPassword, randomName } = require('../../utils/dataGenerator');
@@ -9,7 +8,6 @@ const SignupPage = require('../pages/SignupPage');
 const AccountPage = require('../pages/AccountPage');
 
 let userCache = { generatedUser: null };
-
 let home, login, signup, account;
 
 Given('the user opens the application at {string}', async ({ page }, url) => {
@@ -40,7 +38,6 @@ When('the user enters a new name and email', async () => {
   const name = randomName();
   const email = randomEmail();
   userCache.generatedUser = { name, email };
-  console.log("Usuario generado:", userCache.generatedUser);
   await login.enterNewUser(name, email);
 });
 
@@ -53,7 +50,6 @@ When('clicks {string}', async ({}, button) => {
 When('the user completes the account information form', async () => {
   const password = randomPassword();
   userCache.generatedUser.password = password;
-  console.log("Password generado:", password);
   await signup.fillAccountInformation(password);
 });
 
@@ -71,10 +67,9 @@ When('the user clicks {string}', async ({}, action) => {
   if (action === "Logout") await account.clickLogout();
 });
 
-When('the user enters an existing name and email', async ({ page }) => {
+When('the user enters an existing name and email', async () => {
   const name = "KevinExisting";
   const email = "test@mail.com";
-
   await login.enterNewUser(name, email);
 });
 
@@ -89,16 +84,14 @@ When('the user enters invalid credentials', async () => {
   await login.enterInvalidCredentials();
 });
 
-
 Then('the login message {string} is visible', async ({}, msg) => {
-   if (msg.includes("username")) {
+  if (msg.includes("username")) {
     msg = msg.replace("username", userCache.generatedUser.name);
   }
-  console.log("Validando mensaje:", msg);
   await account.messageIsVisible(msg);
 });
 
-Then('the error {string} is visible', async ({ page }, msg) => {
+Then('the error {string} is visible', async ({}, msg) => {
   await login.errorIsVisible(msg);
 });
 

@@ -1,10 +1,9 @@
 require('../hooks/hooks.js');
-
 const { createBdd } = require('playwright-bdd');
 const { Given, When, Then } = createBdd();
 
 When('the user fills the review form with valid information', async () => {
-  await productDetailPage.fillReviewForm("Kevin", testEmail, "Excelente producto!");
+  await productDetailPage.fillReviewForm("Kevin", testEmail, "TEST REVIEW COMMENT!");
 });
 
 When('submits the review', async () => {

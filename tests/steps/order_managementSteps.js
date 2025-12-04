@@ -1,11 +1,6 @@
 require('../hooks/hooks.js');
-
 const { createBdd } = require('playwright-bdd');
 const { Given, When, Then } = createBdd();
-
-// --------------------------------------------------
-// TEST 14 – Register While Checkout
-// --------------------------------------------------
 
 Given('the user adds a product to the cart', async () => {
   await homePage.clickProducts();
@@ -45,10 +40,6 @@ Then('the order should be placed successfully', async () => {
   await orderConfirmPage.verifySuccessMessage();
 });
 
-// --------------------------------------------------
-// TEST 15 – Register BEFORE Checkout
-// --------------------------------------------------
-
 Given('the user registers a new account', async () => {
   await homePage.goToSignupLogin();
   await signupPage.signupNewUser(testEmail, 'Kevin QA', testPassword);
@@ -61,29 +52,15 @@ Then('the order confirmation should be visible', async () => {
   await orderConfirmPage.verifySuccessMessage();
 });
 
-// --------------------------------------------------
-// TEST 16 – Login BEFORE checkout
-// --------------------------------------------------
 Given('the user logs in with an existing account', async () => {
-  // Usamos el correo dinámico generado en el hook
   const email = testEmail;
   const password = testPassword;
-
-  // Ir a Signup/Login
   await homePage.goToSignupLogin();
-
-  // Registramos nuevo usuario (que será el "existing account" de este test)
   await signupPage.signupNewUser(email, 'Kevin QA', password);
   await signupPage.verifyAccountCreated();
   await signupPage.clickContinue();
-
-  // Verificamos que quedó logueado
   await loginPage.verifyLoggedIn();
 });
-
-// --------------------------------------------------
-// TEST 24 – Download Invoice
-// --------------------------------------------------
 
 Given('the user completes a purchase with valid payment details', async () => {
   await checkoutPage.clickPlaceOrder();
@@ -98,7 +75,6 @@ When('the user clicks the Download Invoice button', async () => {
 Then('the invoice file should download successfully', async () => {
   await orderConfirmPage.verifyInvoiceDownloaded();
 });
-
 
 When('proceeds to checkout', async () => {
   await cartPage.clickProceedToCheckout();
