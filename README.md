@@ -1,14 +1,16 @@
-📘 Proyecto de Automatización – Playwright + Screenplay + BDD
+📘 Proyecto de Automatización – Playwright + POM + BDD
 
 Este proyecto contiene automatización end-to-end del sitio AutomationExercise, utilizando:
 
 Playwright
 
-Patrón Screenplay
+Page Object Model (POM)
 
-Cucumber (Gherkin)
+Cucumber (Gherkin) con bddgen
 
-TypeScript
+JavaScript / TypeScript
+
+El enfoque está pensado para ser claro, mantenible y fácil de escalar.
 
 📁 Estructura del Proyecto
 /tests
@@ -25,20 +27,23 @@ TypeScript
     recommended.feature
     scrolling.feature
   /steps
-    *.steps.ts
-  /screenplay
-    /actors
-    /tasks
-    /interactions
-    /questions
-    /ui
-
+    *.steps.js
+  /pages
+    HomePage.js
+    ProductsPage.js
+    CartPage.js
+    CheckoutPage.js
+    CategoriesPage.js
+    BrandsPage.js
+    ReviewsPage.js
+    RecommendedPage.js
+    SubscriptionPage.js
 /playwright.config.ts
 /package.json
 /README.md
 
-🧩 Organización de Features
-Feature	Test Cases
+🧪 Mapeo de Features a Casos de Prueba
+Feature	Casos
 home.feature	10, 25, 26
 products.feature	8, 21
 search.feature	9, 20
@@ -56,59 +61,100 @@ cd <project-folder>
 npm install
 npx playwright install
 
-▶️ Ejecución
-Ejecutar todo
-npm test
+▶️ Ejecución del Proyecto
+🔹 Ejecutar todos los tests
+npx playwright test
 
-Ejecutar un feature específico
+🔹 Generar los steps automáticamente (bddgen)
+npx bddgen
+
+🔹 Ejecutar un archivo .feature específico con cucumber-js
 npx cucumber-js tests/features/products.feature
 
-Ejecutar en modo UI
+🔹 Modo Interactivo (UI Test Runner)
 npx playwright test --ui
 
-🧱 Arquitectura Screenplay
+🔹 Ejecutar tests individuales usando tags
+npx playwright test --grep "@TAG" --headed
 
-Actors: definen el comportamiento del usuario.
+🧱 Arquitectura POM
 
-Tasks: acciones de alto nivel reutilizables.
+El proyecto sigue el patrón Page Object Model, organizando el código en páginas reutilizables:
 
-Interactions: acciones atómicas como click, type, hover, scroll.
+🖼️ Pages
 
-Questions: validaciones y consultas.
+Cada archivo representa una página del sistema y contiene:
 
-UI: selectores centralizados.
+Selectores centralizados
 
-La arquitectura está diseñada para mantener el código limpio, mantenible y escalable.
+Acciones propias de la página
 
-🧪 Escenarios BDD
+Validaciones básicas
 
-Los escenarios están escritos en Gherkin utilizando la sintaxis:
+🧪 Steps
 
-Given → contexto inicial
+Contienen únicamente los pasos Given/When/Then en formato Gherkin, delegando toda la lógica a las páginas.
 
-When → acción
+📂 Features
 
-Then → validación
+Escenarios escritos en Gherkin, fáciles de leer para negocio.
 
-And → pasos adicionales
+Este enfoque permite:
 
-Cada escenario es independiente y auto-contenido.
+Mantener orden y claridad
+
+Reutilizar funciones
+
+Evitar código duplicado
+
+Mejorar la escalabilidad
+
+🧪 Escenarios en Gherkin
+
+Los escenarios siguen la sintaxis:
+
+Given → Preparación del entorno
+
+When → Acciones del usuario
+
+Then → Validaciones
+
+And → Pasos complementarios
+
+Ejemplo básico:
+
+Given the user is on the home page
+When the user clicks "Products"
+Then the products list should be visible
 
 📊 Reportes
+
+Ver el reporte generado por Playwright:
+
 npx playwright show-report
 
-💡 Buenas Prácticas
+💡 Buenas Prácticas Usadas en el Proyecto
 
-Mantener los selectores en un único archivo por vista.
+Selectores limpios y reutilizables desde las Pages.
 
-Crear tasks y interactions reutilizables.
+Steps sin lógica compleja, solo delegación.
 
-Evitar lógica en los steps: solo delegan acciones.
+Features claros y cortos.
 
-Mantener escenarios cortos, claros y de negocio.
+Uso de tags para ejecución segmentada.
 
-Evitar data hardcodeada dentro de los steps.
+No hardcodear datos dentro de steps (solo en utils cuando aplica).
 
-📞 Soporte
+Reutilización de funciones comunes para evitar duplicación.
 
-Si deseas agregar más features, optimizar el Screenplay o generar documentación automática, puedes continuar expandiendo este repositorio siguiendo la misma estructura.
+📥 Soporte y Expansión
+
+Este proyecto está preparado para seguir creciendo:
+
+Nuevas páginas y flujos
+
+Más features en Gherkin
+
+Integración con pipelines CI/CD
+
+Reportes avanzados
