@@ -1,85 +1,148 @@
+require('../hooks/hooks.js');
+
 const { createBdd } = require('playwright-bdd');
-const { When, Then } = createBdd();
-const ProductsPage = require('../pages/ProductsPage');
-const ProductDetailPage = require('../pages/ProductDetailsPage');
-const CartPage = require('../pages/CartPage');
-const SubscriptionPage = require('../pages/SubscriptionPage');
+const { Given, When, Then } = createBdd();
+
 const { randomEmail } = require('../../utils/dataGenerator');
 
-let cartPage;
-let subscriptionPage;
-let email;
-let productDetailPage;
+// -------------------------
+// CART PAGE SUBSCRIPTION
+// -------------------------
 
-// OPEN CART
-When('the user Cart clicks', async ({ page }, option) => {
-    cartPage = new CartPage(page);
-    await cartPage.openCart();  
+When('the user Cart clicks', async () => {
+  await cartPage.openCart();
+  await productsPage.clickHere();
 });
 
-// FOOTER SCROLL
-When('the user scrolls to the footer', async ({ page }) => {
-  subscriptionPage = new SubscriptionPage(page);
+When('the user scrolls to the footer', async () => {
   await subscriptionPage.scrollToFooter();
 });
 
-// SUBSCRIPTION SECTION VISIBLE
-Then('the section cart SUBSCRIPTION {string} is visible', async ({ page }, sectionName) => {
+Then('the section cart SUBSCRIPTION {string} is visible', async ({}, sectionName) => {
   if (sectionName === "SUBSCRIPTION") {
     await subscriptionPage.verifySubscriptionSectionVisible();
   }
 });
 
+// -------------------------
+// TEST 12: MULTIPLE PRODUCTS
+// -------------------------
 
-// SUCCESS MESSAGE
-Then('the message SUSCRIPTION {string} is visible', async ({ page }, message) => {
-  await subscriptionPage.verifySuccessMessage();
+When('the user clicks "Products"', async () => {
+  await productsPage.openProductsPage();  
 });
 
-// ADD FIRST PRODUCT
-When('adds the first product to the cart', async ({ page }) => {
+When('adds the first product to the cart', async () => {
   await productsPage.addFirstProductToCart();
 });
 
-// CONTINUE SHOPPING
-When('clicks Continue Shopping "Continue Shopping"', async ({ page }) => {
-  await productsPage.continueShopping();
-});
 
-// ADD SECOND PRODUCT
-When('adds the second product to the cart', async ({ page }) => {
+When('adds the second product to the cart', async () => {
   await productsPage.addSecondProductToCart();
 });
 
-// GO TO CART
-When('clicks View Cart', async ({ page }) => {
+When('clicks View Cart', async () => {
   await productsPage.goToCart();
-  cartPage = new CartPage(page);
 });
 
-// VALIDATE PRODUCTS
-Then('both products are visible in the cart with correct prices, quantities and totals', async ({ page }) => {
+Then('both products are visible in the cart with correct prices, quantities and totals', async () => {
   await cartPage.verifyProductsVisible();
   await cartPage.verifyPricesQuantitiesTotals();
 });
 
-When('the user opens a product detail page', async ({ page }) => {
-  productDetailPage = new ProductDetailPage(page);
-  await productDetailPage.openProductByIndex(4); // igual que codegen
+// -------------------------
+// TEST 13: QUANTITY VALIDATION
+// -------------------------
+
+When('the user opens a product detail page', async () => {
+  await productDetailPage.openProductByIndex(4);
 });
 
-Then('the product detail is visible', async ({ page }) => {
+Then('the product detail is visible', async () => {
   await productDetailPage.verifyProductDetailVisible();
 });
 
-When('the user sets quantity to {int}', async ({ page }, qty) => {
+When('the user sets quantity to {int}', async ({}, qty) => {
   await productDetailPage.setQuantity(qty);
 });
 
-When('clicks Add to cart', async ({ page }) => {
+When('clicks Add to cart', async () => {
   await productDetailPage.addToCart();
 });
 
-Then('the product is displayed in the cart with quantity {int}', async ({ page }, qty) => {
+When('clicks View Cart quantity', async () => {
+  await productsPage.goToCart();
+});
+
+Then('the product is displayed in the cart with quantity {int}', async ({}, qty) => {
   await cartPage.verifyQuantity(qty);
 });
+
+When('the user removes the product from the cart', async () => {
+  await cartPage.removeFirstProduct();
+});
+
+Then('the cart should be empty', async () => {
+  await cartPage.verifyCartIsEmpty();
+});
+
+Given('the user opens the Products page', async () => {
+  await productsPage.openProductsPage();
+});
+
+// -------------------------
+// TEST 20: SEARCH + CART + SIGNUP + LOGIN
+// -------------------------
+
+let searchedProduct;
+
+// Ir a Products Page
+Given('the user is on the Products page', async () => {
+  await productsPage.openProductsPage();
+});
+
+// Buscar producto
+When('the user searches for the product {string}', async ({}, searchTerm) => {
+  await productsPage.searchProduct(searchTerm);
+  searchedProduct = await productsPage.getFirstProductName();
+});
+
+// Agregar primer resultado al carrito
+When('the user adds the first search result to the cart', async () => {
+  await productsPage.addFirstSearchResultToCart();
+});
+
+// Ir al carrito
+When('the user proceeds to the cart after search', async () => {
+  await productsPage.goToCart();
+});
+
+// Crear un nuevo usuario desde el carrito
+When('the user creates a new account from cart', async () => {
+  await cartPage.clickSignupLogin();
+
+  await signupPage.signupNewUser(
+    global.testEmail,
+    "TestUser",
+    global.testPassword
+  );
+
+  await signupPage.verifyAccountCreated();
+  await signupPage.clickContinue();
+});
+
+When('the user adds any product to the cart', async () => {
+  await productsPage.openProductsPage();
+  await productsPage.addFirstProductToCart();
+});
+
+// Verificar que el producto sigue en el carrito
+Then('the product should still be in the cart', async () => {
+  await productsPage.goToCart();
+  await cartPage.verifyProductInCart(searchedProduct);
+});
+
+When('the user clicks Proceed To Checkout', async () => {
+  await cartPage.clickProceedToCheckout();
+});
+

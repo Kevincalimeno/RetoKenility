@@ -13,6 +13,7 @@ class ProductDetailsPage {
     this.quantityInput = page.locator('#quantity');
     this.addToCartButton = page.getByRole('button', { name: ' Add to cart' });
     this.viewCartButton = page.getByRole('link', { name: 'View Cart' });
+    this.continueShoppingBtn = page.getByRole('button', { name: /Continue Shopping/i });
   }
 
   async verifyProductDetailPageVisible() {
@@ -40,8 +41,29 @@ class ProductDetailsPage {
     await this.quantityInput.fill(String(qty));
   }
 
+async fillReviewForm(name, email, review) {
+  await this.page.fill('#name', name);
+  await this.page.fill('#email', email);
+  await this.page.fill('#review', review);
+}
+
+async submitReview() {
+  await this.page.click('#button-review');
+}
+
+async verifyReviewSuccess() {
+  await expect(
+    this.page.locator('.alert-success', { hasText: 'Thank you for your review' })
+  ).toBeVisible();
+}
+
+
+
   async addToCart() {
     await this.addToCartButton.click();
+      
+    await expect(this.continueShoppingBtn).toBeVisible();
+    await this.continueShoppingBtn.click();
   }
 
   async goToCart() {

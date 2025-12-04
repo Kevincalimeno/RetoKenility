@@ -24,9 +24,9 @@ class SubscriptionPage {
     await this.subscribeButton.click();
   }
 
-  async verifySuccessMessage() {
-    await expect(this.successMessage).toBeVisible();
-  }
+async verifySuccessMessage(expectedMessage) {
+  await expect(this.successMessage).toHaveText(expectedMessage);
+}
 }
 
 module.exports = SubscriptionPage;
